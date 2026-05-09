@@ -1,15 +1,9 @@
-import React from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import { StackNavigationProp } from '@react-navigation/stack';
-import { RootStackParamList } from '../types/protocol';
+import { useRouter } from 'expo-router';
 
-type HomeScreenNavigationProp = StackNavigationProp<RootStackParamList, 'Home'>;
+export default function HomeScreen() {
+  const router = useRouter();
 
-interface Props {
-  navigation: HomeScreenNavigationProp;
-}
-
-export const HomeScreen: React.FC<Props> = ({ navigation }) => {
   return (
     <View style={styles.container}>
       <View style={styles.content}>
@@ -20,14 +14,14 @@ export const HomeScreen: React.FC<Props> = ({ navigation }) => {
       </View>
 
       <TouchableOpacity
-        style={styles.button}
-        onPress={() => navigation.navigate('DateTime')}
+        style={[styles.button, { marginBottom: 100 }]}
+        onPress={() => router.push('/datetime')}
       >
         <Text style={styles.buttonText}>Розпочати оформлення</Text>
       </TouchableOpacity>
     </View>
   );
-};
+}
 
 const styles = StyleSheet.create({
   container: {

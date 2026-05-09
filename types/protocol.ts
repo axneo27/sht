@@ -16,12 +16,3 @@ export interface ProtocolFormData {
   damageSide: string;
   damageDescription: string;
 }
-
-export type RootStackParamList = {
-  Home: undefined;
-  DateTime: undefined;
-  ParticipantA: undefined;
-  LicenseData: undefined;
-  DamageType: undefined;
-  Summary: undefined;
-};

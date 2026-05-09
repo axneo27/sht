@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import { useContext } from 'react';
 import {
   StyleSheet,
   Text,
@@ -7,24 +7,21 @@ import {
   ScrollView,
   Alert,
 } from 'react-native';
-import { StackNavigationProp } from '@react-navigation/stack';
-import { RootStackParamList } from '../types/protocol';
+import { useRouter } from 'expo-router';
 import { ProtocolContext } from '../context/ProtocolContext';
 
-type SummaryScreenNavigationProp = StackNavigationProp<RootStackParamList, 'Summary'>;
-
-interface Props {
-  navigation: SummaryScreenNavigationProp;
-}
-
-export const SummaryScreen: React.FC<Props> = ({ navigation }) => {
-  const { formData } = useContext(ProtocolContext);
+export default function SummaryScreen() {
+  const router = useRouter();
+  const { formData, resetFormData } = useContext(ProtocolContext);
 
   const handleSubmit = () => {
-    Alert.alert('Успіх', 'Європротокол успішно оформлен!', [
+    Alert.alert('Успіх', 'Європротокол успішно оформлено!', [
       {
         text: 'Оформити новий',
-        onPress: () => navigation.navigate('Home'),
+        onPress: () => {
+          resetFormData();
+          router.dismissAll();
+        },
       },
       {
         text: 'Закрити',
@@ -41,7 +38,6 @@ export const SummaryScreen: React.FC<Props> = ({ navigation }) => {
       </View>
 
       <View style={styles.content}>
-        {/* Date and Time Section */}
         <View style={styles.section}>
           <Text style={styles.sectionTitle}>Дата та час ДТП</Text>
           <View style={styles.sectionContent}>
@@ -56,7 +52,6 @@ export const SummaryScreen: React.FC<Props> = ({ navigation }) => {
           </View>
         </View>
 
-        {/* Participant A Section */}
         <View style={styles.section}>
           <Text style={styles.sectionTitle}>Учасник А</Text>
           <View style={styles.sectionContent}>
@@ -81,7 +76,6 @@ export const SummaryScreen: React.FC<Props> = ({ navigation }) => {
           </View>
         </View>
 
-        {/* License Section */}
         <View style={styles.section}>
           <Text style={styles.sectionTitle}>Водійське посвідчення</Text>
           <View style={styles.sectionContent}>
@@ -104,7 +98,6 @@ export const SummaryScreen: React.FC<Props> = ({ navigation }) => {
           </View>
         </View>
 
-        {/* Damage Section */}
         <View style={styles.section}>
           <Text style={styles.sectionTitle}>Вид пошкодження</Text>
           <View style={styles.sectionContent}>
@@ -123,51 +116,24 @@ export const SummaryScreen: React.FC<Props> = ({ navigation }) => {
       </View>
 
       <View style={styles.buttonContainer}>
-        <TouchableOpacity
-          style={styles.buttonSecondary}
-          onPress={() => navigation.goBack()}
-        >
+        <TouchableOpacity style={styles.buttonSecondary} onPress={() => router.back()}>
           <Text style={styles.buttonSecondaryText}>Редагувати</Text>
         </TouchableOpacity>
-        <TouchableOpacity
-          style={styles.buttonPrimary}
-          onPress={handleSubmit}
-        >
+        <TouchableOpacity style={styles.buttonPrimary} onPress={handleSubmit}>
           <Text style={styles.buttonText}>Відправити</Text>
         </TouchableOpacity>
       </View>
     </ScrollView>
   );
-};
+}
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-  },
-  header: {
-    paddingHorizontal: 20,
-    paddingTop: 20,
-    paddingBottom: 10,
-  },
-  title: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    color: '#1a1a1a',
-    marginBottom: 8,
-  },
-  subtitle: {
-    fontSize: 14,
-    color: '#666',
-    lineHeight: 20,
-  },
-  content: {
-    paddingHorizontal: 20,
-    paddingVertical: 20,
-  },
-  section: {
-    marginBottom: 20,
-  },
+  container: { flex: 1, backgroundColor: '#fff' },
+  header: { paddingHorizontal: 20, paddingTop: 20, paddingBottom: 10 },
+  title: { fontSize: 24, fontWeight: 'bold', color: '#1a1a1a', marginBottom: 8 },
+  subtitle: { fontSize: 14, color: '#666', lineHeight: 20 },
+  content: { paddingHorizontal: 20, paddingVertical: 20 },
+  section: { marginBottom: 20 },
   sectionTitle: {
     fontSize: 16,
     fontWeight: 'bold',
@@ -177,39 +143,18 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderBottomColor: '#e0e0e0',
   },
-  sectionContent: {
-    backgroundColor: '#f9f9f9',
-    borderRadius: 8,
-    padding: 12,
-  },
+  sectionContent: { backgroundColor: '#f9f9f9', borderRadius: 8, padding: 12 },
   row: {
     flexDirection: 'row',
     paddingVertical: 8,
     borderBottomWidth: 1,
     borderBottomColor: '#e0e0e0',
   },
-  rowFull: {
-    flexDirection: 'column',
-  },
-  rowLabel: {
-    fontWeight: '600',
-    color: '#666',
-    width: '35%',
-  },
-  rowValue: {
-    color: '#1a1a1a',
-    flex: 1,
-  },
-  rowValueMultiline: {
-    marginTop: 8,
-    lineHeight: 20,
-  },
-  buttonContainer: {
-    flexDirection: 'row',
-    paddingHorizontal: 20,
-    paddingVertical: 20,
-    gap: 12,
-  },
+  rowFull: { flexDirection: 'column' },
+  rowLabel: { fontWeight: '600', color: '#666', width: '35%' },
+  rowValue: { color: '#1a1a1a', flex: 1 },
+  rowValueMultiline: { marginTop: 8, lineHeight: 20 },
+  buttonContainer: { flexDirection: 'row', paddingHorizontal: 20, paddingVertical: 20, gap: 12 },
   buttonSecondary: {
     flex: 1,
     borderWidth: 1,
@@ -218,11 +163,7 @@ const styles = StyleSheet.create({
     paddingVertical: 12,
     alignItems: 'center',
   },
-  buttonSecondaryText: {
-    color: '#007AFF',
-    fontSize: 16,
-    fontWeight: '600',
-  },
+  buttonSecondaryText: { color: '#007AFF', fontSize: 16, fontWeight: '600' },
   buttonPrimary: {
     flex: 1,
     backgroundColor: '#007AFF',
@@ -230,9 +171,5 @@ const styles = StyleSheet.create({
     paddingVertical: 12,
     alignItems: 'center',
   },
-  buttonText: {
-    color: '#fff',
-    fontSize: 16,
-    fontWeight: '600',
-  },
+  buttonText: { color: '#fff', fontSize: 16, fontWeight: '600' },
 });
